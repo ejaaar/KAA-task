@@ -1,0 +1,775 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Planner — Mid Century</title>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=Jost:wght@300;400;500;600&display=swap" rel="stylesheet"/>
+  <style>
+    :root {
+      --cream:     #f5f0e8;
+      --cream-dark:#ede6d6;
+      --mustard:   #d4a017;
+      --amber:     #c47f17;
+      --terra:     #c0583a;
+      --olive:     #6b7c45;
+      --teal:      #3a7c7c;
+      --charcoal:  #2c2c2c;
+      --brown:     #5a3e2b;
+      --sand:      #b8a98a;
+    }
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      background: var(--cream);
+      color: var(--charcoal);
+      font-family: 'Jost', sans-serif;
+      min-height: 100vh;
+      position: relative;
+      overflow-x: hidden;
+    }
+
+    /* ── GEOMETRIC BACKGROUND SHAPES ── */
+    body::before {
+      content: '';
+      position: fixed;
+      top: -120px; right: -120px;
+      width: 420px; height: 420px;
+      background: var(--mustard);
+      border-radius: 50%;
+      opacity: 0.12;
+      z-index: 0;
+    }
+    body::after {
+      content: '';
+      position: fixed;
+      bottom: -80px; left: -80px;
+      width: 300px; height: 300px;
+      background: var(--terra);
+      border-radius: 50%;
+      opacity: 0.10;
+      z-index: 0;
+    }
+
+    /* Decorative mid-century geometric blobs */
+    .deco {
+      position: fixed;
+      z-index: 0;
+      pointer-events: none;
+    }
+    .deco-1 {
+      top: 40%; left: -60px;
+      width: 180px; height: 220px;
+      background: var(--olive);
+      opacity: 0.08;
+      border-radius: 50% 50% 50% 20% / 50% 50% 20% 50%;
+    }
+    .deco-2 {
+      top: 15%; right: 3%;
+      width: 60px; height: 60px;
+      background: var(--terra);
+      opacity: 0.18;
+      border-radius: 50%;
+    }
+    .deco-3 {
+      bottom: 20%; right: 5%;
+      width: 100px; height: 100px;
+      background: var(--teal);
+      opacity: 0.10;
+      clip-path: polygon(50% 0%, 0% 100%, 100% 100%);
+    }
+
+    /* ── LAYOUT ── */
+    .page {
+      position: relative;
+      z-index: 1;
+      max-width: 700px;
+      margin: 0 auto;
+      padding: 60px 24px 100px;
+    }
+
+    /* ── HEADER ── */
+    header {
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      margin-bottom: 52px;
+      animation: fadeDown 0.7s ease both;
+    }
+
+    .header-left { flex: 1; }
+
+    .logo-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background: var(--charcoal);
+      color: var(--cream);
+      font-size: 0.7rem;
+      font-weight: 600;
+      letter-spacing: 3px;
+      text-transform: uppercase;
+      padding: 6px 14px;
+      border-radius: 2px;
+      margin-bottom: 16px;
+    }
+    .logo-badge span { color: var(--mustard); }
+
+    h1 {
+      font-family: 'DM Serif Display', serif;
+      font-size: clamp(2.6rem, 7vw, 4rem);
+      line-height: 1.05;
+      color: var(--charcoal);
+      letter-spacing: -1px;
+    }
+    h1 em {
+      font-style: italic;
+      color: var(--terra);
+    }
+
+    .date-badge {
+      text-align: right;
+      font-size: 0.78rem;
+      font-weight: 500;
+      letter-spacing: 1.5px;
+      text-transform: uppercase;
+      color: var(--sand);
+      line-height: 1.8;
+    }
+    .date-badge strong {
+      display: block;
+      font-family: 'DM Serif Display', serif;
+      font-size: 2.4rem;
+      font-style: italic;
+      color: var(--charcoal);
+      letter-spacing: -1px;
+      line-height: 1;
+    }
+
+    /* ── DIVIDER ── */
+    .divider {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      margin-bottom: 40px;
+      animation: fadeDown 0.7s 0.1s ease both;
+    }
+    .divider-line { flex: 1; height: 1px; background: var(--sand); opacity: 0.5; }
+    .divider-diamond {
+      width: 8px; height: 8px;
+      background: var(--mustard);
+      transform: rotate(45deg);
+      flex-shrink: 0;
+    }
+
+    /* ── STATS STRIP ── */
+    .stats-strip {
+      display: flex;
+      gap: 0;
+      background: var(--charcoal);
+      border-radius: 8px;
+      overflow: hidden;
+      margin-bottom: 40px;
+      animation: fadeDown 0.7s 0.15s ease both;
+    }
+    .stat-item {
+      flex: 1;
+      padding: 18px 20px;
+      text-align: center;
+      border-right: 1px solid rgba(255,255,255,0.08);
+      transition: background 0.2s;
+    }
+    .stat-item:last-child { border-right: none; }
+    .stat-item:hover { background: rgba(255,255,255,0.05); }
+    .stat-num {
+      font-family: 'DM Serif Display', serif;
+      font-size: 2rem;
+      font-style: italic;
+      line-height: 1;
+      margin-bottom: 4px;
+    }
+    .stat-label {
+      font-size: 0.68rem;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      color: var(--sand);
+      font-weight: 500;
+    }
+    .stat-item.s-total .stat-num  { color: var(--cream); }
+    .stat-item.s-done .stat-num   { color: var(--olive); }
+    .stat-item.s-left .stat-num   { color: var(--mustard); }
+
+    /* ── PROGRESS BAR ── */
+    .progress-wrap {
+      margin-bottom: 36px;
+      animation: fadeDown 0.7s 0.2s ease both;
+    }
+    .progress-label {
+      display: flex;
+      justify-content: space-between;
+      font-size: 0.72rem;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      color: var(--sand);
+      font-weight: 600;
+      margin-bottom: 10px;
+    }
+    .progress-label span { color: var(--charcoal); font-weight: 700; }
+    .progress-bg {
+      height: 6px;
+      background: var(--cream-dark);
+      border-radius: 10px;
+      overflow: hidden;
+      border: 1px solid var(--sand);
+    }
+    .progress-fill {
+      height: 100%;
+      background: linear-gradient(90deg, var(--olive), var(--mustard));
+      border-radius: 10px;
+      transition: width 0.6s cubic-bezier(0.34,1.56,0.64,1);
+      width: 0%;
+    }
+
+    /* ── INPUT AREA ── */
+    .input-section {
+      margin-bottom: 40px;
+      animation: fadeDown 0.7s 0.25s ease both;
+    }
+
+    .input-row {
+      display: flex;
+      gap: 12px;
+      align-items: stretch;
+    }
+
+    .input-wrap {
+      flex: 1;
+      position: relative;
+    }
+
+    .task-input {
+      width: 100%;
+      padding: 16px 20px;
+      background: #fff;
+      border: 2px solid var(--cream-dark);
+      border-radius: 6px;
+      font-family: 'Jost', sans-serif;
+      font-size: 1rem;
+      font-weight: 400;
+      color: var(--charcoal);
+      outline: none;
+      transition: border-color 0.25s, box-shadow 0.25s;
+    }
+    .task-input::placeholder { color: var(--sand); }
+    .task-input:focus {
+      border-color: var(--mustard);
+      box-shadow: 0 0 0 4px rgba(212,160,23,0.12);
+    }
+
+    .category-select {
+      padding: 16px 14px;
+      background: var(--cream-dark);
+      border: 2px solid var(--cream-dark);
+      border-radius: 6px;
+      font-family: 'Jost', sans-serif;
+      font-size: 0.85rem;
+      font-weight: 500;
+      color: var(--charcoal);
+      cursor: pointer;
+      outline: none;
+      transition: border-color 0.25s;
+    }
+    .category-select:focus { border-color: var(--mustard); }
+
+    .btn-add {
+      padding: 16px 28px;
+      background: var(--terra);
+      color: var(--cream);
+      font-family: 'Jost', sans-serif;
+      font-weight: 600;
+      font-size: 0.9rem;
+      letter-spacing: 1.5px;
+      text-transform: uppercase;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+      transition: background 0.2s, transform 0.15s;
+      white-space: nowrap;
+    }
+    .btn-add:hover { background: var(--brown); transform: translateY(-2px); }
+    .btn-add:active { transform: translateY(0); }
+
+    /* ── FILTER TABS ── */
+    .filter-tabs {
+      display: flex;
+      gap: 6px;
+      margin-bottom: 28px;
+      flex-wrap: wrap;
+      animation: fadeDown 0.7s 0.3s ease both;
+    }
+    .tab {
+      padding: 8px 18px;
+      border: 1.5px solid var(--sand);
+      border-radius: 2px;
+      background: transparent;
+      font-family: 'Jost', sans-serif;
+      font-size: 0.75rem;
+      font-weight: 600;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      color: var(--sand);
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+    .tab:hover { border-color: var(--charcoal); color: var(--charcoal); }
+    .tab.active {
+      background: var(--charcoal);
+      border-color: var(--charcoal);
+      color: var(--cream);
+    }
+
+    /* ── TASK LIST ── */
+    .task-list {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      animation: fadeDown 0.7s 0.35s ease both;
+    }
+
+    .task-item {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      background: #fff;
+      border: 1.5px solid var(--cream-dark);
+      border-radius: 6px;
+      padding: 18px 20px;
+      transition: all 0.25s ease;
+      animation: slideIn 0.35s ease both;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .task-item::before {
+      content: '';
+      position: absolute;
+      left: 0; top: 0; bottom: 0;
+      width: 4px;
+      border-radius: 4px 0 0 4px;
+      transition: background 0.25s;
+    }
+
+    .task-item[data-cat="kerja"]::before    { background: var(--teal); }
+    .task-item[data-cat="belajar"]::before  { background: var(--olive); }
+    .task-item[data-cat="pribadi"]::before  { background: var(--terra); }
+    .task-item[data-cat="belanja"]::before  { background: var(--mustard); }
+    .task-item[data-cat="lainnya"]::before  { background: var(--sand); }
+
+    .task-item:hover {
+      border-color: var(--sand);
+      box-shadow: 0 4px 20px rgba(44,44,44,0.07);
+      transform: translateY(-2px);
+    }
+
+    .task-item.done {
+      background: var(--cream-dark);
+      border-color: transparent;
+      opacity: 0.65;
+    }
+    .task-item.done::before { opacity: 0.3; }
+
+    /* Custom checkbox */
+    .check-wrap { flex-shrink: 0; }
+    .check-wrap input[type="checkbox"] { display: none; }
+    .check-wrap label {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 24px; height: 24px;
+      border: 2px solid var(--sand);
+      border-radius: 50%;
+      cursor: pointer;
+      transition: all 0.2s;
+      position: relative;
+    }
+    .check-wrap input:checked + label {
+      background: var(--olive);
+      border-color: var(--olive);
+    }
+    .check-wrap input:checked + label::after {
+      content: '';
+      width: 6px; height: 10px;
+      border: 2px solid #fff;
+      border-top: none; border-left: none;
+      transform: rotate(45deg) translateY(-1px);
+    }
+    .check-wrap label:hover { border-color: var(--charcoal); }
+
+    .task-body { flex: 1; min-width: 0; }
+    .task-text {
+      font-size: 1rem;
+      font-weight: 500;
+      color: var(--charcoal);
+      line-height: 1.4;
+      transition: all 0.2s;
+      word-break: break-word;
+    }
+    .task-item.done .task-text {
+      text-decoration: line-through;
+      color: var(--sand);
+    }
+
+    .task-meta {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin-top: 5px;
+    }
+    .cat-tag {
+      font-size: 0.65rem;
+      font-weight: 600;
+      letter-spacing: 1.5px;
+      text-transform: uppercase;
+      padding: 2px 8px;
+      border-radius: 2px;
+    }
+    .cat-tag.kerja   { background: rgba(58,124,124,0.12); color: var(--teal); }
+    .cat-tag.belajar { background: rgba(107,124,69,0.12); color: var(--olive); }
+    .cat-tag.pribadi { background: rgba(192,88,58,0.12);  color: var(--terra); }
+    .cat-tag.belanja { background: rgba(212,160,23,0.12); color: var(--amber); }
+    .cat-tag.lainnya { background: rgba(184,169,138,0.15);color: var(--brown); }
+
+    .task-time {
+      font-size: 0.68rem;
+      color: var(--sand);
+      letter-spacing: 0.5px;
+    }
+
+    .btn-del {
+      background: none;
+      border: none;
+      cursor: pointer;
+      width: 30px; height: 30px;
+      display: flex; align-items: center; justify-content: center;
+      border-radius: 50%;
+      color: var(--sand);
+      font-size: 1.1rem;
+      transition: all 0.2s;
+      flex-shrink: 0;
+    }
+    .btn-del:hover { background: rgba(192,88,58,0.12); color: var(--terra); }
+
+    /* Empty state */
+    .empty-state {
+      text-align: center;
+      padding: 60px 20px;
+      display: none;
+    }
+    .empty-state.show { display: block; }
+    .empty-icon {
+      font-size: 3rem;
+      margin-bottom: 16px;
+      opacity: 0.4;
+    }
+    .empty-state h3 {
+      font-family: 'DM Serif Display', serif;
+      font-style: italic;
+      font-size: 1.5rem;
+      color: var(--charcoal);
+      margin-bottom: 8px;
+    }
+    .empty-state p { color: var(--sand); font-size: 0.9rem; }
+
+    /* Clear done button */
+    .bottom-actions {
+      margin-top: 32px;
+      display: flex;
+      justify-content: flex-end;
+      animation: fadeDown 0.7s 0.4s ease both;
+    }
+    .btn-clear {
+      background: none;
+      border: 1.5px solid var(--sand);
+      border-radius: 2px;
+      padding: 8px 20px;
+      font-family: 'Jost', sans-serif;
+      font-size: 0.72rem;
+      font-weight: 600;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      color: var(--sand);
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+    .btn-clear:hover { border-color: var(--terra); color: var(--terra); }
+
+    /* Footer */
+    footer {
+      margin-top: 64px;
+      text-align: center;
+      animation: fadeDown 0.7s 0.45s ease both;
+    }
+    .footer-ornament {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 16px;
+      margin-bottom: 16px;
+    }
+    .footer-ornament-line { width: 60px; height: 1px; background: var(--sand); opacity: 0.4; }
+    .footer-ornament-dot  { width: 5px; height: 5px; background: var(--mustard); border-radius: 50%; }
+    footer p { font-size: 0.72rem; letter-spacing: 2px; text-transform: uppercase; color: var(--sand); }
+
+    /* Animations */
+    @keyframes fadeDown {
+      from { opacity: 0; transform: translateY(-14px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+    @keyframes slideIn {
+      from { opacity: 0; transform: translateX(-12px); }
+      to   { opacity: 1; transform: translateX(0); }
+    }
+    @keyframes pop {
+      0%   { transform: scale(1); }
+      50%  { transform: scale(1.03); }
+      100% { transform: scale(1); }
+    }
+  </style>
+</head>
+<body>
+
+<div class="deco deco-1"></div>
+<div class="deco deco-2"></div>
+<div class="deco deco-3"></div>
+
+<div class="page">
+
+  <!-- HEADER -->
+  <header>
+    <div class="header-left">
+      <div class="logo-badge">✦ <span>Daily</span> Planner</div>
+      <h1>Apa yang <em>harus</em><br>kamu lakukan?</h1>
+    </div>
+    <div class="date-badge">
+      <strong id="dayNum">—</strong>
+      <span id="monthYear">— —</span>
+      <span id="dayName">—</span>
+    </div>
+  </header>
+
+  <!-- DIVIDER -->
+  <div class="divider">
+    <div class="divider-line"></div>
+    <div class="divider-diamond"></div>
+    <div class="divider-line"></div>
+  </div>
+
+  <!-- STATS -->
+  <div class="stats-strip">
+    <div class="stat-item s-total">
+      <div class="stat-num" id="statTotal">0</div>
+      <div class="stat-label">Total Tugas</div>
+    </div>
+    <div class="stat-item s-done">
+      <div class="stat-num" id="statDone">0</div>
+      <div class="stat-label">Selesai</div>
+    </div>
+    <div class="stat-item s-left">
+      <div class="stat-num" id="statLeft">0</div>
+      <div class="stat-label">Tersisa</div>
+    </div>
+  </div>
+
+  <!-- PROGRESS -->
+  <div class="progress-wrap">
+    <div class="progress-label">
+      <span>Progres Hari Ini</span>
+      <span id="progressPct">0%</span>
+    </div>
+    <div class="progress-bg">
+      <div class="progress-fill" id="progressFill"></div>
+    </div>
+  </div>
+
+  <!-- INPUT -->
+  <div class="input-section">
+    <div class="input-row">
+      <div class="input-wrap">
+        <input class="task-input" id="taskInput" type="text" placeholder="Tulis tugasmu di sini..." maxlength="120"/>
+      </div>
+      <select class="category-select" id="catSelect">
+        <option value="belajar">📚 Belajar</option>
+        <option value="kerja">💼 Kerja</option>
+        <option value="pribadi">🌿 Pribadi</option>
+        <option value="belanja">🛒 Belanja</option>
+        <option value="lainnya">✦ Lainnya</option>
+      </select>
+      <button class="btn-add" onclick="addTask()">+ Tambah</button>
+    </div>
+  </div>
+
+  <!-- FILTER TABS -->
+  <div class="filter-tabs">
+    <button class="tab active" data-filter="semua" onclick="setFilter(this)">Semua</button>
+    <button class="tab" data-filter="aktif"  onclick="setFilter(this)">Aktif</button>
+    <button class="tab" data-filter="selesai" onclick="setFilter(this)">Selesai</button>
+    <button class="tab" data-filter="belajar" onclick="setFilter(this)">📚 Belajar</button>
+    <button class="tab" data-filter="kerja"   onclick="setFilter(this)">💼 Kerja</button>
+    <button class="tab" data-filter="pribadi" onclick="setFilter(this)">🌿 Pribadi</button>
+    <button class="tab" data-filter="belanja" onclick="setFilter(this)">🛒 Belanja</button>
+  </div>
+
+  <!-- TASK LIST -->
+  <div class="task-list" id="taskList"></div>
+
+  <!-- EMPTY STATE -->
+  <div class="empty-state" id="emptyState">
+    <div class="empty-icon">◎</div>
+    <h3>Tidak ada tugas di sini</h3>
+    <p>Tambahkan tugas baru di atas untuk memulai harimu.</p>
+  </div>
+
+  <!-- BOTTOM ACTIONS -->
+  <div class="bottom-actions">
+    <button class="btn-clear" onclick="clearDone()">Hapus yang selesai</button>
+  </div>
+
+  <!-- FOOTER -->
+  <footer>
+    <div class="footer-ornament">
+      <div class="footer-ornament-line"></div>
+      <div class="footer-ornament-dot"></div>
+      <div class="footer-ornament-line"></div>
+    </div>
+    <p>Mid Century Planner &nbsp;✦&nbsp; Stay Focused</p>
+  </footer>
+
+</div>
+
+<script>
+  // ── DATE ──
+  const now = new Date();
+  const days   = ['Minggu','Senin','Selasa','Rabu','Kamis','Jumat','Sabtu'];
+  const months = ['Januari','Februari','Maret','April','Mei','Juni','Juli','Agustus','September','Oktober','November','Desember'];
+  document.getElementById('dayNum').textContent   = now.getDate();
+  document.getElementById('monthYear').textContent = months[now.getMonth()] + ' ' + now.getFullYear();
+  document.getElementById('dayName').textContent   = days[now.getDay()];
+
+  // ── STATE ──
+  let tasks = JSON.parse(localStorage.getItem('mcm-tasks') || '[]');
+  let currentFilter = 'semua';
+
+  function save() { localStorage.setItem('mcm-tasks', JSON.stringify(tasks)); }
+
+  function now12() {
+    const d = new Date();
+    let h = d.getHours(), m = d.getMinutes();
+    const ampm = h >= 12 ? 'PM' : 'AM';
+    h = h % 12 || 12;
+    return h + ':' + String(m).padStart(2,'0') + ' ' + ampm;
+  }
+
+  // ── ADD ──
+  function addTask() {
+    const input = document.getElementById('taskInput');
+    const text  = input.value.trim();
+    if (!text) { input.focus(); input.style.borderColor = 'var(--terra)'; setTimeout(()=>input.style.borderColor='',800); return; }
+    const cat = document.getElementById('catSelect').value;
+    tasks.unshift({ id: Date.now(), text, cat, done: false, time: now12() });
+    save();
+    input.value = '';
+    input.focus();
+    renderTasks();
+  }
+
+  // ── TOGGLE ──
+  function toggleTask(id) {
+    const t = tasks.find(t => t.id === id);
+    if (t) { t.done = !t.done; save(); renderTasks(); }
+  }
+
+  // ── DELETE ──
+  function deleteTask(id) {
+    const el = document.getElementById('item-' + id);
+    if (el) { el.style.opacity='0'; el.style.transform='translateX(20px)'; el.style.transition='all 0.25s'; }
+    setTimeout(() => { tasks = tasks.filter(t => t.id !== id); save(); renderTasks(); }, 250);
+  }
+
+  // ── CLEAR DONE ──
+  function clearDone() { tasks = tasks.filter(t => !t.done); save(); renderTasks(); }
+
+  // ── FILTER ──
+  function setFilter(btn) {
+    document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+    btn.classList.add('active');
+    currentFilter = btn.dataset.filter;
+    renderTasks();
+  }
+
+  function filteredTasks() {
+    if (currentFilter === 'semua')   return tasks;
+    if (currentFilter === 'aktif')   return tasks.filter(t => !t.done);
+    if (currentFilter === 'selesai') return tasks.filter(t => t.done);
+    return tasks.filter(t => t.cat === currentFilter);
+  }
+
+  // ── RENDER ──
+  function renderTasks() {
+    const list = document.getElementById('taskList');
+    const empty = document.getElementById('emptyState');
+    const ft = filteredTasks();
+
+    // Stats (always on all tasks)
+    const total = tasks.length;
+    const done  = tasks.filter(t => t.done).length;
+    const left  = total - done;
+    const pct   = total > 0 ? Math.round((done/total)*100) : 0;
+
+    document.getElementById('statTotal').textContent = total;
+    document.getElementById('statDone').textContent  = done;
+    document.getElementById('statLeft').textContent  = left;
+    document.getElementById('progressPct').textContent = pct + '%';
+    document.getElementById('progressFill').style.width = pct + '%';
+
+    if (ft.length === 0) {
+      list.innerHTML = '';
+      empty.classList.add('show');
+      return;
+    }
+    empty.classList.remove('show');
+
+    list.innerHTML = ft.map(t => `
+      <div class="task-item ${t.done ? 'done' : ''}" id="item-${t.id}" data-cat="${t.cat}">
+        <div class="check-wrap">
+          <input type="checkbox" id="chk-${t.id}" ${t.done ? 'checked' : ''} onchange="toggleTask(${t.id})"/>
+          <label for="chk-${t.id}"></label>
+        </div>
+        <div class="task-body">
+          <div class="task-text">${escHtml(t.text)}</div>
+          <div class="task-meta">
+            <span class="cat-tag ${t.cat}">${catLabel(t.cat)}</span>
+            <span class="task-time">${t.time}</span>
+          </div>
+        </div>
+        <button class="btn-del" onclick="deleteTask(${t.id})" title="Hapus">✕</button>
+      </div>
+    `).join('');
+  }
+
+  function catLabel(cat) {
+    return { belajar:'📚 Belajar', kerja:'💼 Kerja', pribadi:'🌿 Pribadi', belanja:'🛒 Belanja', lainnya:'✦ Lainnya' }[cat] || cat;
+  }
+
+  function escHtml(s) {
+    return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+  }
+
+  // Enter key
+  document.getElementById('taskInput').addEventListener('keydown', e => { if (e.key === 'Enter') addTask(); });
+
+  // Init
+  renderTasks();
+</script>
+</body>
+</html>
